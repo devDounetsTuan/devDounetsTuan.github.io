@@ -1,17 +1,16 @@
 <template>
   <div id="app">
-    <BoardList msg="Welcome to Your Vue.js App"/>
+    <div class="container">
+       <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import BoardList from './components/BoardList.vue'
+//import BoardList from './components/BoardList.vue'
 
 export default {
-  name: 'app',
-  components: {
-    BoardList
-  }
+  name: 'app'
 }
 </script>
 
@@ -23,5 +22,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
 </style>

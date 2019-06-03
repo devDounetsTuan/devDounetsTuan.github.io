@@ -1,13 +1,14 @@
 <template>
   <b-row>
     <b-col cols="12">
-      <h2>Books List</h2>
+      <h1>Books List</h1>
+       <h3><b-link to="/addbook">Add Book</b-link></h3>
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Product ID</th>
-            <th>Product Name</th>
-            <th>Product Price</th>
+            <th scope="col">Title</th>
+            <th>Author</th>
+            <th>Price</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -25,7 +26,7 @@
               </td>
               <td>
                 <span class="icon">
-                  <b-btn @click="onEdit(books.id)" class="fa fa-check">Accept</b-btn>
+                  <b-btn @click="onEditSubmit(books.id)" class="fa fa-check">Accept</b-btn>
                 </span>
                 <span class="icon">
                   <b-btn @click="onCancel" class="fa fa-ban">Cancel</b-btn>
@@ -38,10 +39,10 @@
               <td>{{books.price}}</td>
               <td>
                 <a href="#" class="icon">
-                  <b-btn v-on:click="onDelete(books.id)" class="fa fa-trash">Delete</b-btn>
+                  <b-btn v-on:click="onDelete(books.id)" class="btn-primary">Delete</b-btn>
                 </a>
                 <a href="#" class="icon">
-                  <b-btn v-on:click="onEdit(books)" class="fa fa-pencil">Edit</b-btn>
+                  <b-btn v-on:click="onEdit(books)" class="btn-primary">Edit</b-btn>
                 </a>
                 <router-link
                   :to="{
@@ -63,7 +64,7 @@
 
 <script>
 import firebase from "../firebase";
-import router from "../router";
+//import router from "../router";
 
 export default {
   name: "BookList",
@@ -102,7 +103,6 @@ export default {
   },
   computed: {
     sortedProducts() {
-      console.log(this.books.id);
       return this.books.slice().sort((a, b) => {
         return a.title - b.title;
       });
@@ -127,7 +127,6 @@ export default {
         });
     }, */
     onDelete(id) {
-      console.log(firebase);
       firebase
         .firestore()
         .collection("books")
@@ -139,10 +138,6 @@ export default {
       this.editBookData.title = books.title;
       this.editBookData.author = books.author;
       this.editBookData.price = books.price;
-      console.log(this.editId);
-      console.log(this.editBookData.title);
-      console.log(this.editBookData.author);
-      console.log(this.editBookData.price);
     },
     onCancel(){
       this.editId = '';
@@ -151,7 +146,7 @@ export default {
       this.editBookData.price = '';
     },
     onEditSubmit (id){
-      db.collection("products").doc(id).set(this.editProductData);
+      firebase.firestore().collection("books").doc(id).set(this.editBookData);
       this.editId = '';
       this.editBookData.title = '';
       this.editBookData.author = '';
@@ -166,30 +161,9 @@ export default {
   width: 96%;
   margin: 0 auto;
 }
+.icon {
+  margin-right: 20px;
+}
 </style>
 
-   <!--  <template v-if="editId == books." slot="actions" scope="row">
-          <td>
-            <input v-model="editBookData.title" type="text">
-          </td>
-          <td>
-            <input v-model="editBookData.author" type="text">
-          </td>
-          <td>
-            <input v-model="editBookData.price" type="text">
-          </td>
-          <td>
-            <span class="icon">
-              <i @click="onEditSubmit(product.id)" class="fa fa-check"></i>
-            </span>
-            <span class="icon">
-              <i @click="onCancel" class="fa fa-ban"></i>
-            </span>
-          </td>
-        </template>
-
-        <template slot="actions" scope="row">
-          <b-btn size="sm" v-on:click="onDelete(row.item.key)">Delete</b-btn>
-          <b-btn size="sm" v-on:click="onEdit(row.item)">Edit</b-btn>
-          <!--   <b-btn size="sm" @click.stop="details(row.item)">Edit</b-btn>
-            <b-btn size="sm" @click.stop="details(row.item)">Details</b-btn>-->
+ 
